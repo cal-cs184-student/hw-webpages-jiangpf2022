@@ -367,6 +367,63 @@ for(int y = y_min; y <= y_max; y++){
 					modifications did you make to the rasterization pipeline in the process? Explain how you used
 					supersampling to antialias your triangles.
 				</h3>
+				<h4>Supersampling Algorithm and Data Structures</h4>
+				<p>
+					In my supersampling implementation, I first perform a finer sampling within the bounding box of the
+					triangle.
+					Specifically, I sample using a <code>sqrt(samplerate) × sqrt(samplerate)</code> grid for each pixel,
+					allowing for more precise subpixel coverage testing.
+				</p>
+				<p>
+					To determine whether these finer sample points are inside the triangle, I reuse the code from the
+					previous task,
+					which checks whether a point lies within the triangle's boundaries. All valid sample points are then
+					stored in the
+					<code>Sample_buffer</code>, which maintains per-sample color data for each pixel.
+				</p>
+				<p>
+					Finally, in the <code>resolve_to_framebuffer</code> step, I aggregate the samples by computing the
+					average of all
+					sampled colors within a pixel and then write the final color to the framebuffer. This averaging
+					process ensures
+					smoother transitions between edges and significantly reduces aliasing artifacts.
+				</p>
+
+				<h4>Why is Supersampling Useful?</h4>
+				<p>
+					By taking multiple samples per pixel and averaging them, we can
+					more accurately
+					approximate the coverage of geometric shapes within a pixel.
+				</p>
+				<p>
+					The primary benefits of supersampling include:
+				</p>
+				<ul>
+					<li><b>Reduced aliasing:</b> Jagged edges and pixelation artifacts are smoothed out by averaging
+						multiple samples.</li>
+					<li><b>Improved color transitions:</b> Gradual color changes are better represented, reducing abrupt
+						transitions that make edges appear rough.</li>
+					<li><b>More accurate representation:</b> Supersampling captures finer details of the scene that
+						would otherwise be lost due to limited resolution.</li>
+				</ul>
+				<p>
+					The main modification to the rasterization pipeline involved increasing the number of samples per
+					pixel and storing
+					them in a dedicated sample buffer before resolving them into the final framebuffer. This required
+					additional
+					memory and computational resources but resulted in a noticeable improvement in visual quality.
+				</p>
+				<h3 style="color:blue">
+					Show png screenshots of basic/test4.svg with the default viewing parameters and sample rates 1, 4,
+					and 16 to compare them side-by-side. Position the pixel inspector over an area that showcases the
+					effect dramatically; for example, a very skinny triangle corner. Explain why these results are
+					observed.
+				</h3>
+				<p>
+					The images above demonstrate the effects of supersampling with sample rates of 1, 4, and 16. As the sample rate increases,
+					the aliasing artifacts, such as jagged edges and pixelation, become significantly reduced. This improvement is particularly noticeable
+					along the edges of the triangles, especially at very acute corners.
+				</p>
 				<div style="display: flex; flex-direction: column; align-items: center;">
 					<table style="width: 100%; text-align: center; border-collapse: collapse;">
 						<tr>
@@ -383,14 +440,29 @@ for(int y = y_min; y <= y_max; y++){
 								<figcaption>supersample rate:16</figcaption>
 							</td>
 						</tr>
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/super_1s.png" width="300px" />
+								<figcaption>supersample rate:1</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/super_4s.png" width="300px" />
+								<figcaption>supersample rate:4</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/super_16s.png" width="300px" />
+								<figcaption>supersample rate:16</figcaption>
+							</td>
+						</tr>
 					</table>
 				</div>
-				<h3 style="color:blue">
-					Show png screenshots of basic/test4.svg with the default viewing parameters and sample rates 1, 4,
-					and 16 to compare them side-by-side. Position the pixel inspector over an area that showcases the
-					effect dramatically; for example, a very skinny triangle corner. Explain why these results are
-					observed.
-				</h3>
+				<p>
+					At a sample rate of 1, only one sample per pixel is taken, leading to visible aliasing, particularly in regions where triangle edges
+					intersect with pixel boundaries. At a sample rate of 4, the additional samples allow for a more accurate representation of subpixel
+					coverage, leading to smoother edges. Finally, at a sample rate of 16, the transition between colors is even more gradual, effectively
+					eliminating visible aliasing and providing a much cleaner visual output.
+				</p>
+				
 				<h3 style="color:red">
 					Extra credit: If you implemented alternative antialiasing methods, describe them and include
 					comparison pictures demonstrating the difference between your method and grid-based supersampling.
