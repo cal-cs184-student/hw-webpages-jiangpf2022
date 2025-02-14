@@ -131,6 +131,47 @@
 					then the pixel is inside the triangle, and we call the <code>fill_pixel(x, y, color)</code> function
 					to color it.
 				</p>
+				<h3>Explain how your algorithm is no worse than one that checks each sample within the bounding box of
+					the triangle. The bounding box of the triangle is defined as the smallest rectangle that can be
+					drawn whilst ensuring that the entire triangle is within it.</h3>
+
+				<p>
+					To optimize the rasterization process, my algorithm first determines the <b>bounding box</b> of the
+					triangle before iterating over pixels. The bounding box is calculated as:
+				</p>
+
+				\[
+				x_{\text{min}} = \lfloor \min(x_0, x_1, x_2) \rfloor, \quad x_{\text{max}} = \lceil \max(x_0, x_1, x_2)
+				\rceil
+				\]
+
+				\[
+				y_{\text{min}} = \lfloor \min(y_0, y_1, y_2) \rfloor, \quad y_{\text{max}} = \lceil \max(y_0, y_1, y_2)
+				\rceil
+				\]
+
+				<p>
+					This ensures that the algorithm only considers the smallest rectangular region containing the
+					triangle, avoiding unnecessary computations outside of this area. By limiting the loop to iterate
+					within this bounding box, the number of pixels checked is at most the number of pixels in the
+					bounding box.
+				</p>
+
+				<p>
+					Since the bounding box is the minimal enclosing rectangle for the triangle, any algorithm that
+					checks each sample within the bounding box will inherently examine at least the same number of
+					pixels. My approach does not perform any additional operations beyond this predefined region,
+					ensuring that it is <b>no worse</b> than a naïve method that simply iterates over all pixels within
+					the bounding box.
+				</p>
+
+				<p>
+					Furthermore, by precomputing the bounding box, my algorithm directly determines the region of
+					interest, thereby reducing unnecessary conditional checks for pixels outside the triangle's range.
+					This makes it at least as efficient as any approach that performs a naïve bounding box scan before
+					testing each pixel.
+				</p>
+
 				<!-- <p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
