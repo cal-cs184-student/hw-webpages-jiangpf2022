@@ -420,8 +420,10 @@ for(int y = y_min; y <= y_max; y++){
 					observed.
 				</h3>
 				<p>
-					The images above demonstrate the effects of supersampling with sample rates of 1, 4, and 16. As the sample rate increases,
-					the aliasing artifacts, such as jagged edges and pixelation, become significantly reduced. This improvement is particularly noticeable
+					The images above demonstrate the effects of supersampling with sample rates of 1, 4, and 16. As the
+					sample rate increases,
+					the aliasing artifacts, such as jagged edges and pixelation, become significantly reduced. This
+					improvement is particularly noticeable
 					along the edges of the triangles, especially at very acute corners.
 				</p>
 				<div style="display: flex; flex-direction: column; align-items: center;">
@@ -457,18 +459,62 @@ for(int y = y_min; y <= y_max; y++){
 					</table>
 				</div>
 				<p>
-					At a sample rate of 1, only one sample per pixel is taken, leading to visible aliasing, particularly in regions where triangle edges
-					intersect with pixel boundaries. At a sample rate of 4, the additional samples allow for a more accurate representation of subpixel
-					coverage, leading to smoother edges. Finally, at a sample rate of 16, the transition between colors is even more gradual, effectively
+					At a sample rate of 1, only one sample per pixel is taken, leading to visible aliasing, particularly
+					in regions where triangle edges
+					intersect with pixel boundaries. At a sample rate of 4, the additional samples allow for a more
+					accurate representation of subpixel
+					coverage, leading to smoother edges. Finally, at a sample rate of 16, the transition between colors
+					is even more gradual, effectively
 					eliminating visible aliasing and providing a much cleaner visual output.
 				</p>
-				
+
 				<h3 style="color:red">
 					Extra credit: If you implemented alternative antialiasing methods, describe them and include
 					comparison pictures demonstrating the difference between your method and grid-based supersampling.
 
 				</h3>
 
+				<p>
+					In addition to grid-based supersampling, I implemented jittered sampling as an alternative
+					antialiasing method.
+					Unlike uniform grid-based supersampling, which places samples at evenly spaced intervals within each
+					pixel,
+					jittered sampling perturbs the sample positions randomly within the pixel. This randomization helps
+					to
+					break up regular aliasing patterns that might still be visible with uniform supersampling.
+				</p>
+				<p>
+					The comparison image below demonstrates the difference between 4x supersampling and 4x jittered
+					sampling:
+				</p>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/super_4s.png" width="300px" />
+								<figcaption>supersampling rate:4</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/jitter_4s.png" width="300px" />
+								<figcaption>jitter sampling rate:4</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<p>
+					As observed in the image, the left side, which uses regular supersampling, still exhibits some
+					aliasing artifacts,
+					particularly along thin triangle edges. The right side, which employs jittered sampling, produces
+					smoother edges
+					because the random sampling helps reduce structured aliasing and better approximates the true
+					geometry.
+				</p>
+				<p>
+					Jittered sampling is particularly beneficial for handling high-frequency patterns and thin objects,
+					where
+					regular supersampling may still struggle with aliasing artifacts due to its structured sample
+					placement.
+				</p>
 				<h2>Task 3: Transforms</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
