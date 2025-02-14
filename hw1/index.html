@@ -11,8 +11,7 @@
 			}
 		};
 	</script>
-	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-	</script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
 	<!-- Include custom font -->
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -37,6 +36,11 @@
 
 		body {
 			font-family: 'Inter', sans-serif;
+		}
+
+		/* 在此处为每个段落增加缩进 */
+		p {
+			text-indent: 2em;
 		}
 	</style>
 </head>
@@ -69,17 +73,17 @@
     We've already added one heading per task, to make your write-up as navigable when grading. Please fit your write-up within these sections!
     -->
 
-		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole.
-		Share your thoughts on what interesting things you've learned from completing the homework.
+		<h2 style="color:red">Overview</h2>
+		<p>Give a high-level overview of what you implemented in this homework. Think about what you've built as
+			a whole. Share your thoughts on what interesting things you've learned from completing the homework.</p>
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
 		<h3 style="color: blue;">Walk through how you rasterize triangles in your own words.</h3>
 		<p>
 			To rasterize a triangle correctly, we first need to determine the <b>orientation</b> of the triangle's
 			vertices. This ensures that regardless of whether the vertices are specified in <b>clockwise</b> or
-			<b>counterclockwise</b> order, the triangle is correctly rendered. We achieve this by computing the signed
-			area of the triangle:
+			<b>counterclockwise</b> order, the triangle is correctly rendered. We achieve this by computing the
+			signed area of the triangle:
 		</p>
 
 		\[
@@ -115,7 +119,6 @@
 				x_{\text{min}} = \lfloor \min(x_0, x_1, x_2) \rfloor, \quad x_{\text{max}} = \lceil \max(x_0, x_1, x_2)
 				\rceil
 				\]
-
 				\[
 				y_{\text{min}} = \lfloor \min(y_0, y_1, y_2) \rfloor, \quad y_{\text{max}} = \lceil \max(y_0, y_1, y_2)
 				\rceil
@@ -152,22 +155,22 @@
 					to color it.
 				</p>
 
-				<h3 style="color: blue;">Explain how your algorithm is no worse than one that checks each sample within
-					the bounding box of the triangle. The bounding box of the triangle is defined as the smallest
-					rectangle
-					that can be drawn whilst ensuring that the entire triangle is within it.
+				<h3 style="color: blue;">
+					Explain how your algorithm is no worse than one that checks each sample within the bounding box of
+					the triangle. The bounding box of the triangle is defined as the smallest rectangle that can be
+					drawn
+					whilst ensuring that the entire triangle is within it.
 				</h3>
 
 				<p>
-					To optimize the rasterization process, my algorithm first determines the <b>bounding box</b> of the
-					triangle before iterating over pixels. The bounding box is calculated as:
+					To optimize the rasterization process, my algorithm first determines the <b>bounding box</b> of
+					the triangle before iterating over pixels. The bounding box is calculated as:
 				</p>
 
 				\[
 				x_{\text{min}} = \lfloor \min(x_0, x_1, x_2) \rfloor, \quad x_{\text{max}} = \lceil \max(x_0, x_1, x_2)
 				\rceil
 				\]
-
 				\[
 				y_{\text{min}} = \lfloor \min(y_0, y_1, y_2) \rfloor, \quad y_{\text{max}} = \lceil \max(y_0, y_1, y_2)
 				\rceil
@@ -188,12 +191,11 @@
 					the bounding box.
 				</p>
 
-				<h3 style="color: blue;">Show a png screenshot of basic/test4.svg with the default viewing parameters
-					and with the pixel inspector centered on an interesting part of the scene.</h3>
-				<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each
-					<b>td</b> is a column in that row. You might find this useful for framing and showing your result
-					images in an organized fashion.
-				</p>
+				<h3 style="color: blue;">
+					Show a png screenshot of basic/test4.svg with the default viewing parameters and with the pixel
+					inspector
+					centered on an interesting part of the scene.
+				</h3>
 
 				<div style="display: flex; flex-direction: column; align-items: center;">
 					<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -220,83 +222,69 @@
 					</table>
 				</div>
 
-				<h3 style="color:red">Extra credit: Explain any special optimizations you did beyond simple bounding box
-					triangle rasterization, with a timing comparison table (we suggest using the c++ clock() function
-					around
-					the svg.draw() command in DrawRend::redraw() to compare millisecond timings with your various
-					optimizations
-					off and on)</h3>
+				<h3 style="color:red">
+					Extra credit: Explain any special optimizations you did beyond simple bounding box triangle
+					rasterization,
+					with a timing comparison table (we suggest using the c++ clock() function around the svg.draw()
+					command
+					in DrawRend::redraw() to compare millisecond timings with your various optimizations off and on)
+				</h3>
 
 				<h2>Task 2: Antialiasing by Supersampling</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum
+					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+					officia deserunt mollit anim id est laborum.
 				</p>
 
 				<h2>Task 3: Transforms</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum
+					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+					officia deserunt mollit anim id est laborum.
 				</p>
 
 				<h2>Task 4: Barycentric coordinates</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum
+					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+					officia deserunt mollit anim id est laborum.
 				</p>
 
 				<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+					culpa qui officia deserunt mollit anim id est laborum.
 				</p>
 
 				<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+					culpa qui officia deserunt mollit anim id est laborum.
 				</p>
 
 				<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip
-					ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-					dolore eu
-					fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
+					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+					culpa qui officia deserunt mollit anim id est laborum.
 				</p>
 				<!-- End tasks -->
 
