@@ -225,9 +225,142 @@
 					Extra credit: Explain any special optimizations you did beyond simple bounding box triangle
 					rasterization,
 					with a timing comparison table (we suggest using the c++ clock() function around the svg.draw()
-					command
-					in DrawRend::redraw() to compare millisecond timings with your various optimizations off and on)
+					command in DrawRend::redraw() to compare millisecond timings with your various optimizations off and
+					on)
 				</h3>
+
+				<h4>Optimizations Implemented</h4>
+
+				<p>
+					In this extra credit task, I optimized the triangle rasterization process beyond the simple
+					bounding box method.
+					The following key optimizations were implemented:
+				</p>
+
+				<ul>
+					<li>
+						<b>Incremental Edge Function Updates:</b> Instead of recalculating edge functions for each pixel
+						independently,
+						we initialize them once and use incremental updates. Moving right by one pixel only requires
+						adding the edge’s
+						<code>A</code> coefficient, and moving down a row only requires adding <code>B</code>.
+					</li>
+					<li>
+						<b>Bounding Box Clipping:</b> The bounding box is computed and clipped to screen limits before
+						iteration,
+						reducing unnecessary condition checks inside the loops.
+					</li>
+					<li>
+						<b>Early Termination on Empty Rows:</b> Once a valid pixel is found in a row, the loop continues
+						scanning,
+						but if no more valid pixels can exist (due to triangle shape), it breaks early, avoiding
+						unnecessary calculations.
+					</li>
+					<li>
+						<b>Memory Access Optimization:</b> By reducing redundant memory accesses inside the loop,
+						the optimized version improves cache locality and execution efficiency.
+					</li>
+				</ul>
+				<h4>Core Code Comparison</h4>
+
+				<p>
+					The following code snippets highlight the main differences between the naive and optimized
+					implementations.
+				</p>
+
+				<table border="1" style="border-collapse: collapse; text-align: left; width: 100%;">
+					<tr>
+						<th style="width: 50%; background-color: #f8d7da;">Naive Implementation</th>
+						<th style="width: 50%; background-color: #d4edda;">Optimized Implementation</th>
+					</tr>
+					<tr>
+						<td>
+							<pre style="white-space: pre-wrap; font-size: 14px;">
+// Loop over every pixel in bounding box
+for(float i=x_min; i<=x_max; i++){
+    for(float j=y_min; j<=y_max; j++){
+        float posx = i + 0.5, posy = j + 0.5;
+        float L1 = -(posx-x0)*dy0 + (posy-y0)*dx0;
+        float L2 = -(posx-x1)*dy1 + (posy-y1)*dx1;
+        float L3 = -(posx-x2)*dy2 + (posy-y2)*dx2;
+        if (L1 >= 0 && L2 >= 0 && L3 >= 0) {
+            fill_pixel(i, j, color);
+        }
+    }
+}
+            </pre>
+						</td>
+						<td>
+							<pre style="white-space: pre-wrap; font-size: 14px;">
+// Compute initial edge function values at (x_min + 0.5, y_min)
+float L1_row = A0 * (x_min + 0.5) + B0 * y_min + C0;
+float L2_row = A1 * (x_min + 0.5) + B1 * y_min + C1;
+float L3_row = A2 * (x_min + 0.5) + B2 * y_min + C2;
+
+// Loop per scanline, update edge function incrementally
+for(int y = y_min; y <= y_max; y++){
+    float L1 = L1_row, L2 = L2_row, L3 = L3_row;
+    bool is_valid = false;
+    
+    for(int x = x_min; x <= x_max; x++){
+        if (L1 >= 0 && L2 >= 0 && L3 >= 0) {
+            fill_pixel(x, y, color);
+            is_valid = true;
+        } else if (is_valid) break; // Stop early
+        L1 += A0; L2 += A1; L3 += A2;
+    }
+
+    L1_row += B0;
+    L2_row += B1;
+    L3_row += B2;
+}
+            </pre>
+						</td>
+					</tr>
+				</table>
+
+				<h4>Conclusion</h4>
+				<h4>Timing Comparison</h4>
+
+				<p>
+					Below is a timing comparison between the naive rasterization method and the optimized version,
+					recorded in microseconds (us). The tests were conducted on different test cases (test 3, 4, 5, and
+					6).
+				</p>
+
+				<table border="1" style="border-collapse: collapse; text-align: center; width: 80%;">
+					<tr>
+						<th>Test Case</th>
+						<th>Naive Rasterization Time (us)</th>
+						<th>Optimized Rasterization Time (us)</th>
+						<th>Speedup</th>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>13,625</td>
+						<td>7,123</td>
+						<td>1.91x</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>796</td>
+						<td>641</td>
+						<td>1.24x</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>2,500</td>
+						<td>1,508</td>
+						<td>1.66x</td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>1486us</td>
+						<td>832</td>
+						<td>1.785x</td>
+					</tr>
+				</table>
+
 
 				<h2>Task 2: Antialiasing by Supersampling</h2>
 				<p>
