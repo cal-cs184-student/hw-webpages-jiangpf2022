@@ -319,7 +319,6 @@ for(int y = y_min; y <= y_max; y++){
 					</tr>
 				</table>
 
-				<h4>Conclusion</h4>
 				<h4>Timing Comparison</h4>
 
 				<p>
@@ -363,13 +362,39 @@ for(int y = y_min; y <= y_max; y++){
 
 
 				<h2>Task 2: Antialiasing by Supersampling</h2>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum
-					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-					officia deserunt mollit anim id est laborum.
+				<p style="color:blue">
+					Walk through your supersampling algorithm and data structures. Why is supersampling useful? What
+					modifications did you make to the rasterization pipeline in the process? Explain how you used
+					supersampling to antialias your triangles.
+				</p>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/super_1.png" width="300px" />
+								<figcaption>test3.svg</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/super_4.png" width="300px" />
+								<figcaption>test4.svg</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/super_16.png" width="300px" />
+								<figcaption>test5.svg</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<p style="color:blue">
+					Show png screenshots of basic/test4.svg with the default viewing parameters and sample rates 1, 4,
+					and 16 to compare them side-by-side. Position the pixel inspector over an area that showcases the
+					effect dramatically; for example, a very skinny triangle corner. Explain why these results are
+					observed.
+				</p>
+				<p style="color:red">
+					Extra credit: If you implemented alternative antialiasing methods, describe them and include
+					comparison pictures demonstrating the difference between your method and grid-based supersampling.
+
 				</p>
 
 				<h2>Task 3: Transforms</h2>
