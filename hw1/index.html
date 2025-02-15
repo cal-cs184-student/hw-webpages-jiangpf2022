@@ -712,13 +712,125 @@ case 'E':
 
 
 				<h2>Task 5: "Pixel sampling" for texture mapping</h2>
+				<h3 style="color:blue">Explain pixel sampling in your own words and describe how you implemented it to
+					perform texture mapping. Briefly discuss the two different pixel sampling methods, nearest and
+					bilinear.</h3>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum.
+					Pixel sampling is the process of retrieving color values from a texture image to apply onto a
+					rendered object.
+					In texture mapping, each screen-space pixel corresponds to a texture-space coordinate, and we must
+					determine
+					how to compute the final color for that pixel based on the underlying texture pixels (texels).
+					The two main pixel sampling methods are:
 				</p>
+
+				<ul>
+					<li><strong>Nearest-neighbor sampling</strong>: Selects the texel closest to the computed texture
+						coordinate.
+						This method is fast but can result in blocky artifacts when upscaling or aliasing effects when
+						downscaling.</li>
+					<li><strong>Bilinear interpolation</strong>: Uses the four closest texels around the computed
+						texture coordinate
+						and interpolates their colors based on distance. This results in a smoother appearance compared
+						to nearest-neighbor sampling.</li>
+				</ul>
+
+				<p>
+					In my implementation, I defined a <code>SampleParams</code> struct that includes a pixel sampling
+					method (`psm`)
+					and a texture coordinate (`p_uv`). When rendering textured triangles, I compute the barycentric
+					interpolation
+					of texture coordinates at each pixel and pass them to the <code>Texture::sample</code> function.
+					Depending on
+					whether `psm` is set to <code>P_NEAREST</code> or <code>P_LINEAR</code>, the `sample` function calls
+					either
+					`sample_nearest()` or `sample_bilinear()`, respectively.
+				</p>
+
+				<h3 style="color:blue">Check out the svg files in the svg/texmap/ directory. Use the pixel inspector to
+					find a good example of where bilinear sampling clearly defeats nearest sampling. Show and compare
+					four png screenshots using nearest sampling at 1 sample per pixel, nearest sampling at 16 samples
+					per pixel, bilinear sampling at 1 sample per pixel, and bilinear sampling at 16 samples per pixel.
+				</h3>
+
+				<p>
+					Below, I present four different renderings of the texture mapped image from <code>test1.svg</code>.
+					The images
+					compare the results of nearest and bilinear sampling at 1 sample per pixel (1 spp) and 16 samples
+					per pixel (16 spp).
+				</p>
+
+				<table>
+					<tr>
+						<td><strong>Nearest, 1 spp</strong></td>
+						<td><strong>Bilinear, 1 spp</strong></td>
+					</tr>
+					<tr>
+						<td><img src="image/map_nearest_1.png" alt="Nearest, 1 spp" width="400"></td>
+						<td><img src="image/map_bilinear_1.png" alt="Bilinear, 1 spp" width="400"></td>
+					</tr>
+					<tr>
+						<td><strong>Nearest, 16 spp</strong></td>
+						<td><strong>Bilinear, 16 spp</strong></td>
+					</tr>
+					<tr>
+						<td><img src="image/map_nearest_16.png" alt="Nearest, 16 spp" width="400"></td>
+						<td><img src="image/map_bilinear_16.png" alt="Bilinear, 16 spp" width="400"></td>
+					</tr>
+				</table>
+
+				<h3>Detailed Close-ups</h3>
+
+				<p>
+					To better illustrate the differences, we provide zoomed-in sections of the texture-mapped images.
+				</p>
+
+				<table>
+					<tr>
+						<td><strong>Nearest, 1 spp (Detail)</strong></td>
+						<td><strong>Bilinear, 1 spp (Detail)</strong></td>
+					</tr>
+					<tr>
+						<td><img src="image/map_nearst_1_detail.png" alt="Nearest, 1 spp Detail" width="400"></td>
+						<td><img src="image/map_bilinear_1_detail.png" alt="Bilinear, 1 spp Detail" width="400"></td>
+					</tr>
+					<tr>
+						<td><strong>Nearest, 16 spp (Detail)</strong></td>
+						<td><strong>Bilinear, 16 spp (Detail)</strong></td>
+					</tr>
+					<tr>
+						<td><img src="image/map_nearest_16_detail.png" alt="Nearest, 16 spp Detail" width="400"></td>
+						<td><img src="image/map_bilinear_16_detail.png" alt="Bilinear, 16 spp Detail" width="400"></td>
+					</tr>
+				</table>
+
+				<h3 style="color:blue">Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.</h3>
+
+				<p>
+					The differences between nearest and bilinear sampling are most evident in the detailed close-ups. In
+					the nearest-neighbor
+					case, visible pixelation and sharp texel boundaries cause aliasing artifacts. Bilinear filtering
+					produces a smoother transition
+					between texels, reducing harsh edges and improving visual quality.
+				</p>
+
+				<p>
+					The effect of supersampling (16 spp vs. 1 spp) is also noticeable. At 16 samples per pixel, both
+					methods reduce aliasing
+					artifacts, but nearest-neighbor still retains its blocky appearance. Bilinear sampling combined with
+					16 spp produces the
+					smoothest and most natural result.
+				</p>
+
+				<p>
+					The difference between the two sampling methods becomes particularly significant when dealing with
+					textures that contain
+					fine details or when performing minification (i.e., when a large texture is mapped to a small screen
+					space). Bilinear
+					filtering helps prevent aliasing in such cases by interpolating between texels instead of simply
+					picking the nearest one.
+				</p>
+
 
 				<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 				<p>
