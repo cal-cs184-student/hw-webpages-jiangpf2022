@@ -630,14 +630,86 @@ case 'E':
 					</table>
 				</div>
 				<h2>Task 4: Barycentric coordinates</h2>
+				<h3 style="color:blue">
+					Explain barycentric coordinates in your own words and use an image to aid you in your explanation.
+					One idea is to use a svg file that plots a single triangle with one red, one green, and one blue
+					vertex, which should produce a smoothly blended color triangle.
+				</h3>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/baycentric_interpolation_triangle.png" width="800px" />
+								<figcaption>Barycentric interpolated color triangle</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum
-					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-					officia deserunt mollit anim id est laborum.
+					Barycentric coordinates provide a way to represent any point inside a triangle as a weighted
+					combination of the triangle’s three vertices. Given a triangle with vertices \( A(x_A, y_A) \), \(
+					B(x_B, y_B) \), and \( C(x_C, y_C) \), a point \( P(x, y) \) inside the triangle can be expressed
+					as:
 				</p>
+				<p>
+					\[
+					P = \alpha A + \beta B + \gamma C,
+					\]
+				</p>
+				<p>
+					where \( \alpha, \beta, \gamma \) are the barycentric coordinates, satisfying \( \alpha + \beta +
+					\gamma = 1 \). The formulas for computing these weights are:
+				</p>
+				<p>
+					\[
+					\alpha = \frac{-(x - x_B)(y_C - y_B) + (y - y_B)(x_C - x_B)}{-(x_A - x_B)(y_C - y_B) + (y_A -
+					y_B)(x_C - x_B)}
+					\]
+				</p>
+				<p>
+					\[
+					\beta = \frac{-(x - x_C)(y_A - y_C) + (y - y_C)(x_A - x_C)}{-(x_B - x_C)(y_A - y_C) + (y_B -
+					y_C)(x_A - x_C)}
+					\]
+				</p>
+				<p>
+					\[
+					\gamma = 1 - \alpha - \beta
+					\]
+				</p>
+
+				<h3>Color Interpolation using Barycentric Coordinates</h3>
+				<p>
+					By assigning colors \( C_A, C_B, C_C \) to the three vertices, we can interpolate the color at any
+					point \( P \) inside the triangle using the same weights:
+				</p>
+				<p>
+					\[
+					C_P = \alpha C_A + \beta C_B + \gamma C_C
+					\]
+				</p>
+				<p>
+					This allows smooth color gradients to be created within a triangle, blending colors based on the
+					distances to each vertex.
+				</p>
+
+				<h3 style="color:blue">Show a png screenshot of svg/basic/test7.svg with default viewing parameters and
+					sample rate 1. If you make any additional images with color gradients, include them.</h3>
+				<p>
+					To demonstrate barycentric coordinate-based color interpolation, I rendered an SVG file containing a
+					circle with multiple colors. The result is a smoothly blended color wheel circle.
+				</p>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/baycentric_interpolation.png" width="800px" />
+								<figcaption>Barycentric interpolated color</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
+
 
 				<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 				<p>
@@ -666,17 +738,6 @@ case 'E':
 					culpa qui officia deserunt mollit anim id est laborum.
 				</p>
 				<!-- End tasks -->
-
-				<h2>Additional Notes (please remove)</h2>
-				<ul>
-					<li>You can also add code if you'd like as so: <code>code code code</code></li>
-					<li>If you'd like to add math equations,
-						<ul>
-							<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-							<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-						</ul>
-					</li>
-				</ul>
 	</div>
 </body>
 
