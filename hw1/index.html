@@ -468,7 +468,7 @@ for(int y = y_min; y <= y_max; y++){
 					eliminating visible aliasing and providing a much cleaner visual output.
 				</p>
 
-				<h3 style="color:red">
+				<h3 style="color:blue">
 					Extra credit: If you implemented alternative antialiasing methods, describe them and include
 					comparison pictures demonstrating the difference between your method and grid-based supersampling.
 
@@ -516,15 +516,119 @@ for(int y = y_min; y <= y_max; y++){
 					placement.
 				</p>
 				<h2>Task 3: Transforms</h2>
+				<h3>Translation Matrix</h3>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum
-					dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-					officia deserunt mollit anim id est laborum.
+					The translation matrix moves a point \((x, y)\) by \((dx, dy)\) and is represented as:
+				</p>
+				<p>
+					\[
+					\begin{bmatrix}
+					1 & 0 & dx \\
+					0 & 1 & dy \\
+					0 & 0 & 1
+					\end{bmatrix}
+					\]
+				</p>
+				<h3>Scaling Matrix</h3>
+				<p>
+					The scaling matrix scales a point by \((sx, sy)\) along the x and y axes and is given by:
+				</p>
+				<p>
+					\[
+					\begin{bmatrix}
+					sx & 0 & 0 \\
+					0 & sy & 0 \\
+					0 & 0 & 1
+					\end{bmatrix}
+					\]
 				</p>
 
+				<h3>Rotation Matrix</h3>
+				<p>
+					The rotation matrix rotates a point counterclockwise by \( \theta \) degrees and is given by:
+				</p>
+				<p>
+					\[
+					\begin{bmatrix}
+					\cos(\theta) & -\sin(\theta) & 0 \\
+					\sin(\theta) & \cos(\theta) & 0 \\
+					0 & 0 & 1
+					\end{bmatrix}
+					\]
+				</p>
+
+				<h3>result</h3>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/transformation1.png" width="800px" />
+								<figcaption>supersampling rate:4</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<h3>Updated Cubeman (my_robot.svg)</h3>
+				<p>
+					Using translation, scaling, and rotation operations, I created an updated version of
+					<code>robot.svg</code> named <code>my_robot.svg</code>. The new cubeman is animated to appear as if
+					he is waving. This was achieved by rotating his arm and slightly adjusting the proportions and
+					colors.
+				</p>
+				<p>
+					The rasterized result of my updated cubeman is shown below:
+				</p>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/my_robots.png" width="800px" />
+								<figcaption>Updated cubeman (waving animation)</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<h3>Extra Feature: Viewport Rotation</h3>
+				<p>
+					I also added a new feature to the GUI that allows users to rotate the viewport using the 'Q' and 'E'
+					keys. This modification enables users to dynamically adjust the orientation of the entire scene.
+				</p>
+				<p>
+					The feature was implemented in the <code>keyboard_event</code> function as follows:
+				</p>
+				<pre>
+case 'Q':
+    svg_to_ndc[current_svg] = rotate(-5) * svg_to_ndc[current_svg];
+    redraw();
+    break;
+
+case 'E':
+    svg_to_ndc[current_svg] = rotate(5) * svg_to_ndc[current_svg];
+    redraw();
+    break;
+</pre>
+				<p>
+					By applying a 3x3 rotation matrix to <code>svg_to_ndc</code>, this feature rotates all objects in
+					the scene, giving the user control over the view orientation.
+				</p>
+				<p>
+					The result of applying viewport rotation is shown below:
+				</p>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+								<img src="image/press_q.png" width="400px" />
+								<figcaption>Viewport rotation applied using 'Q' keys</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="image/press_e.png" width="400px" />
+								<figcaption>Viewport rotation applied using 'E' keys</figcaption>
+							</td>
+						</tr>
+					</table>
+				</div>
 				<h2>Task 4: Barycentric coordinates</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
