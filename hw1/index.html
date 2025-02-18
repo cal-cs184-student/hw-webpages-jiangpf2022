@@ -807,37 +807,118 @@ case 'E':
 				<h3 style="color:blue">Comment on the relative differences. Discuss when there will be a large
 					difference between the two methods and why.</h3>
 
-					<h3 style="color:blue">Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.</h3>
+				<h3 style="color:blue">Comment on the relative differences. Discuss when there will be a large
+					difference between the two methods and why.</h3>
 
-					<p>
-						The differences between <b>nearest-neighbor</b> and <b>bilinear sampling</b> are most evident in the close-up images. 
-						Nearest-neighbor sampling exhibits blocky artifacts, especially when a texture is magnified, as each texel is assigned to a single pixel without interpolation. 
-						This results in noticeable pixelation and jagged edges, particularly along diagonal lines or high-contrast transitions. 
-						Bilinear sampling, on the other hand, reduces these artifacts by averaging the colors of the four nearest texels, producing a much smoother and more visually appealing transition between colors.
-					</p>
-					
-					<p>
-						The effect of increasing the sample rate from 1 sample per pixel to 16 samples per pixel is also significant. 
-						At a higher sample rate, aliasing is reduced in both methods, but nearest-neighbor sampling still retains its characteristic blocky appearance due to the lack of interpolation. 
-						Bilinear sampling combined with supersampling provides the smoothest results, as it not only interpolates texel values but also benefits from multiple sample points per pixel, further reducing jagged edges and improving texture fidelity.
-					</p>
-					
-					<p>
-						The difference between these two methods is most pronounced in cases where textures undergo significant magnification, as nearest-neighbor sampling causes visible pixelation while bilinear interpolation produces a smoother result. 
-						In minification scenarios, where a high-resolution texture is displayed at a smaller size, aliasing artifacts appear in nearest-neighbor sampling due to the loss of high-frequency details, while bilinear filtering reduces these effects but can introduce blurring. 
-						Additionally, when a texture contains fine details, such as text or intricate patterns, nearest-neighbor sampling fails to preserve the smoothness of the original texture, leading to sharp discontinuities, whereas bilinear filtering maintains a more natural transition between colors. 
-						However, in cases where sharp edges are intentionally desired or when performance constraints are critical, nearest-neighbor sampling remains a viable choice due to its simplicity and efficiency.
-					</p>
+				<p>
+					The differences between <b>nearest-neighbor</b> and <b>bilinear sampling</b> are most evident in the
+					close-up images.
+					Nearest-neighbor sampling exhibits blocky artifacts, especially when a texture is magnified, as each
+					texel is assigned to a single pixel without interpolation.
+					This results in noticeable pixelation and jagged edges, particularly along diagonal lines or
+					high-contrast transitions.
+					Bilinear sampling, on the other hand, reduces these artifacts by averaging the colors of the four
+					nearest texels, producing a much smoother and more visually appealing transition between colors.
+				</p>
+
+				<p>
+					The effect of increasing the sample rate from 1 sample per pixel to 16 samples per pixel is also
+					significant.
+					At a higher sample rate, aliasing is reduced in both methods, but nearest-neighbor sampling still
+					retains its characteristic blocky appearance due to the lack of interpolation.
+					Bilinear sampling combined with supersampling provides the smoothest results, as it not only
+					interpolates texel values but also benefits from multiple sample points per pixel, further reducing
+					jagged edges and improving texture fidelity.
+				</p>
+
+				<p>
+					The difference between these two methods is most pronounced in cases where textures undergo
+					significant magnification, as nearest-neighbor sampling causes visible pixelation while bilinear
+					interpolation produces a smoother result.
+					In minification scenarios, where a high-resolution texture is displayed at a smaller size, aliasing
+					artifacts appear in nearest-neighbor sampling due to the loss of high-frequency details, while
+					bilinear filtering reduces these effects but can introduce blurring.
+					Additionally, when a texture contains fine details, such as text or intricate patterns,
+					nearest-neighbor sampling fails to preserve the smoothness of the original texture, leading to sharp
+					discontinuities, whereas bilinear filtering maintains a more natural transition between colors.
+					However, in cases where sharp edges are intentionally desired or when performance constraints are
+					critical, nearest-neighbor sampling remains a viable choice due to its simplicity and efficiency.
+				</p>
 
 
 				<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum.
+					In texture mapping, level sampling (mipmap selection) plays a crucial role in determining the
+					trade-off between texture quality, aliasing reduction, memory usage, and rendering speed. By using
+					mipmaps, we can sample lower-resolution textures for distant objects, reducing aliasing and
+					improving performance.
 				</p>
+
+				<h3>Tradeoffs between speed, memory usage, and antialiasing power</h3>
+				<p>
+					The three main factors influencing texture sampling—speed, memory usage, and antialiasing
+					effectiveness—are interconnected. Nearest sampling is the fastest but produces blocky, aliased
+					results. Bilinear filtering smooths the texture at a minor performance cost. When combined with
+					mipmaps, bilinear filtering can significantly improve texture quality while maintaining efficient
+					memory usage. Higher mipmap levels reduce aliasing but increase memory consumption. Trilinear
+					filtering (L_LINEAR with P_LINEAR) further improves smooth transitions between mipmap levels at the
+					cost of extra computation.
+				</p>
+
+				<h3>Comparison of Different Sampling Techniques</h3>
+				<p>
+					Below, we present four images, each corresponding to a different combination of level and pixel
+					sampling:
+				</p>
+
+				<ul>
+					<li><strong>L_ZERO and P_NEAREST:</strong> Samples only from the base mipmap level using nearest
+						neighbor interpolation, leading to severe aliasing.</li>
+					<li><strong>L_ZERO and P_LINEAR:</strong> Samples from the base level but interpolates between
+						texels, slightly reducing aliasing.</li>
+					<li><strong>L_NEAREST and P_NEAREST:</strong> Selects the nearest appropriate mipmap level but still
+						uses nearest sampling, improving aliasing slightly.</li>
+					<li><strong>L_LINEAR and P_LINEAR:</strong> Uses trilinear filtering, blending between mipmap levels
+						and interpolating pixels, producing the smoothest and highest quality texture.</li>
+				</ul>
+
+				<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+					<div style="margin: 10px; text-align: center;">
+						<img src="image/l_zero_p_nearest.png" alt="L_ZERO P_NEAREST" width="400">
+						<p>L_ZERO & P_NEAREST</p>
+					</div>
+					<div style="margin: 10px; text-align: center;">
+						<img src="image/l_zero_p_linear.png" alt="L_ZERO P_LINEAR" width="400">
+						<p>L_ZERO & P_LINEAR</p>
+					</div>
+					<div style="margin: 10px; text-align: center;">
+						<img src="image/l_linear_p_nearest.png" alt="L_NEAREST P_NEAREST" width="400">
+						<p>L_NEAREST & P_NEAREST</p>
+					</div>
+					<div style="margin: 10px; text-align: center;">
+						<img src="image/l_linear_p_linear.png" alt="L_LINEAR P_LINEAR" width="400">
+						<p>L_LINEAR & P_LINEAR</p>
+					</div>
+				</div>
+
+				<h3>Discussion on the Differences</h3>
+				<p>
+					The choice of sampling method has a significant impact on visual quality. The L_ZERO & P_NEAREST
+					method results in severe pixelation and aliasing due to the lack of interpolation. L_ZERO & P_LINEAR
+					improves this by interpolating between texels, creating a smoother but still aliased result.
+					L_NEAREST & P_NEAREST benefits from mipmap level selection, reducing aliasing, but still suffers
+					from blocky artifacts due to nearest neighbor interpolation. The best results are achieved with
+					L_LINEAR & P_LINEAR, which combines both mipmap interpolation and bilinear filtering, providing the
+					smoothest texture transitions with minimal aliasing.
+				</p>
+				<p>
+					In general, level sampling (L_NEAREST or L_LINEAR) is particularly beneficial when a texture
+					undergoes significant minification (i.e., when a high-resolution texture is projected onto a small
+					screen area). This prevents aliasing and shimmering effects. However, increasing the level sampling
+					complexity introduces additional computational costs, making it a trade-off between quality and
+					performance.
+				</p>
+
 
 				<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 				<p>
