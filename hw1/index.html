@@ -805,40 +805,68 @@ case 'E':
 
 
 				<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
+
+				<h3 style="color:blue">Explain level sampling in your own words and describe how you implemented it for
+					texture mapping.</h3>
 				<p>
-					In texture mapping, level sampling (mipmap selection) plays a crucial role in determining the
-					trade-off between texture quality, aliasing reduction, memory usage, and rendering speed. By using
-					mipmaps, we can sample lower-resolution textures for distant objects, reducing aliasing and
-					improving performance.
+					Level sampling, or mipmap selection, is an essential technique in texture mapping that helps balance
+					performance and visual quality. It works by selecting an appropriate precomputed texture resolution
+					based on the distance of the object from the viewer. This minimizes aliasing artifacts and optimizes
+					memory usage.
+
+					In my implementation, I generated mipmaps by precomputing progressively lower-resolution versions of
+					the original texture. During rendering, I determined the appropriate mipmap level by computing the
+					level of detail (LOD) using:
+
+					\[ L = \max \left( \sqrt{\left(\frac{du}{dx}\right)^2 + \left(\frac{dv}{dx}\right)^2},
+					\sqrt{\left(\frac{du}{dy}\right)^2 + \left(\frac{dv}{dy}\right)^2} \right) \]
+
+					and then computing the mipmap level as:
+
+					\[ D = \log_2 L \]
+
+					I applied either nearest selection (L_NEAREST) or linear interpolation (L_LINEAR) to sample between
+					mipmap levels. This technique improves visual fidelity while keeping performance manageable.
 				</p>
 
-				<h3>Tradeoffs between speed, memory usage, and antialiasing power</h3>
+				<h3 style="color:blue">Describe the tradeoffs between speed, memory usage, and antialiasing power
+					between the three various techniques.</h3>
 				<p>
-					The three main factors influencing texture sampling—speed, memory usage, and antialiasing
-					effectiveness—are interconnected. Nearest sampling is the fastest but produces blocky, aliased
-					results. Bilinear filtering smooths the texture at a minor performance cost. When combined with
-					mipmaps, bilinear filtering can significantly improve texture quality while maintaining efficient
-					memory usage. Higher mipmap levels reduce aliasing but increase memory consumption. Trilinear
-					filtering (L_LINEAR with P_LINEAR) further improves smooth transitions between mipmap levels at the
-					cost of extra computation.
+					There are three key trade-offs in texture sampling:
+
+					- **Speed:** Nearest-neighbor sampling (P_NEAREST) is the fastest since it only selects the closest
+					texel. Bilinear filtering (P_LINEAR) improves visual smoothness but adds slight overhead. Using
+					mipmaps reduces the number of texture lookups required but introduces additional processing when
+					selecting levels.
+					- **Memory Usage:** Mipmaps consume approximately 33% more memory than the original texture, as
+					multiple scaled-down versions must be stored. However, they allow for more efficient texture
+					lookups, especially for distant objects.
+					- **Antialiasing Power:** Higher mipmap levels significantly reduce aliasing by preventing
+					high-frequency texture details from creating artifacts. Trilinear filtering (L_LINEAR & P_LINEAR)
+					provides the smoothest transition between levels but comes at a computational cost.
 				</p>
 
-				<h3>Comparison of Different Sampling Techniques</h3>
+				<h3 style="color:blue">Comparison of Different Sampling Techniques</h3>
 				<p>
-					Below, we present four images, each corresponding to a different combination of level and pixel
-					sampling:
+					To illustrate the effects of different sampling techniques, we compare four combinations of level
+					and pixel sampling:
 				</p>
 
 				<ul>
-					<li><strong>L_ZERO and P_NEAREST:</strong> Samples only from the base mipmap level using nearest
-						neighbor interpolation, leading to severe aliasing.</li>
-					<li><strong>L_ZERO and P_LINEAR:</strong> Samples from the base level but interpolates between
-						texels, slightly reducing aliasing.</li>
-					<li><strong>L_NEAREST and P_NEAREST:</strong> Selects the nearest appropriate mipmap level but still
-						uses nearest sampling, improving aliasing slightly.</li>
-					<li><strong>L_LINEAR and P_LINEAR:</strong> Uses trilinear filtering, blending between mipmap levels
-						and interpolating pixels, producing the smoothest and highest quality texture.</li>
+					<li><strong>L_ZERO and P_NEAREST:</strong> Uses the highest-resolution mipmap level with
+						nearest-neighbor sampling, causing severe aliasing and blockiness.</li>
+					<li><strong>L_ZERO and P_LINEAR:</strong> Uses the highest-resolution mipmap level with bilinear
+						filtering, slightly improving smoothness.</li>
+					<li><strong>L_NEAREST and P_NEAREST:</strong> Selects the closest mipmap level but still uses
+						nearest-neighbor interpolation, reducing some aliasing but keeping blocky artifacts.</li>
+					<li><strong>L_NEAREST and P_LINEAR:</strong> Selects the nearest mipmap level and interpolates
+						between texels, providing a smoother visual experience.</li>
 				</ul>
+
+				<h3 style="color:blue">Demonstration of Sampling Effects</h3>
+				<p>
+					Below are four images showcasing the effects of different sampling techniques:
+				</p>
 
 				<div style="display: flex; flex-wrap: wrap; justify-content: center;">
 					<div style="margin: 10px; text-align: center;">
@@ -855,28 +883,28 @@ case 'E':
 					</div>
 					<div style="margin: 10px; text-align: center;">
 						<img src="image/l_linear_p_linear.png" alt="L_LINEAR P_LINEAR" width="400">
-						<p>L_LINEAR & P_LINEAR</p>
+						<p>L_NEAREST & P_LINEAR</p>
 					</div>
 				</div>
 
-				<h3>Discussion on the Differences</h3>
+				<h3 style="color:blue">Discussion on the Differences</h3>
 				<p>
-					The choice of sampling method has a significant impact on visual quality. The L_ZERO & P_NEAREST
-					method results in severe pixelation and aliasing due to the lack of interpolation. L_ZERO & P_LINEAR
-					improves this by interpolating between texels, creating a smoother but still aliased result.
-					L_NEAREST & P_NEAREST benefits from mipmap level selection, reducing aliasing, but still suffers
-					from blocky artifacts due to nearest neighbor interpolation. The best results are achieved with
-					L_LINEAR & P_LINEAR, which combines both mipmap interpolation and bilinear filtering, providing the
-					smoothest texture transitions with minimal aliasing.
-				</p>
-				<p>
-					In general, level sampling (L_NEAREST or L_LINEAR) is particularly beneficial when a texture
-					undergoes significant minification (i.e., when a high-resolution texture is projected onto a small
-					screen area). This prevents aliasing and shimmering effects. However, increasing the level sampling
-					complexity introduces additional computational costs, making it a trade-off between quality and
-					performance.
-				</p>
+					The selected sampling method significantly affects visual quality:
 
+					- **L_ZERO & P_NEAREST:** Produces strong pixelation and aliasing due to the lack of interpolation.
+					- **L_ZERO & P_LINEAR:** Improves smoothness but still exhibits noticeable aliasing due to a lack of
+					mipmap adaptation.
+					- **L_NEAREST & P_NEAREST:** Uses the nearest mipmap level to reduce aliasing but still has blocky
+					textures due to nearest-neighbor sampling.
+					- **L_NEAREST & P_LINEAR:** Provides the best balance of quality and performance, using mipmap level
+					selection and bilinear filtering for smoother results.
+				</p>
+				<p>
+					Using level sampling (L_NEAREST or L_LINEAR) is particularly useful when a texture undergoes
+					significant minification (i.e., when projected onto a small screen area). This prevents aliasing and
+					shimmering effects. However, increasing the complexity of level sampling introduces additional
+					computational costs, requiring a trade-off between performance and quality.
+				</p>
 
 				<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 				<p>
