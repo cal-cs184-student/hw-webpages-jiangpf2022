@@ -840,22 +840,36 @@ case 'E':
 				<h3 style="color:blue">Describe the tradeoffs between speed, memory usage, and antialiasing power
 					between the three various techniques.</h3>
 				<p>
-					There are three key trade-offs in texture sampling:
-
-					- **Speed:** Nearest-neighbor sampling (P_NEAREST) is the fastest since it only selects the closest
-					texel. Bilinear filtering (P_LINEAR) improves visual smoothness but adds slight overhead. Using
-					mipmaps reduces the number of texture lookups required but introduces additional processing when
-					selecting levels.
-					- **Memory Usage:** Mipmaps consume approximately 33% more memory than the original texture, as
-					multiple scaled-down versions must be stored. However, they allow for more efficient texture
-					lookups, especially for distant objects.
-					- **Antialiasing Power:** Higher mipmap levels significantly reduce aliasing by preventing
-					high-frequency texture details from creating artifacts. Trilinear filtering (L_LINEAR & P_LINEAR)
-					provides the smoothest transition between levels but comes at a computational cost.
+					When it comes to speed, the sampling method you choose can significantly affect rendering
+					performance. Low super-sampling combined with nearest-pixel sampling is very efficient because it
+					minimizes computational overhead; only a few subpixels are computed per pixel, and each sample
+					fetches just a single texel. This streamlined process results in fewer arithmetic operations and
+					memory accesses, making it ideal for scenarios where real-time performance is critical. In contrast,
+					techniques lik
+				</p>
+				<p>
+					Memory usage is similarly impacted by your sampling technique. Nearest-pixel sampling and lower
+					super-sampling rates are memory-friendly because they involve minimal data per sample. When you
+					increase the super-sampling rate, you exponentially raise the memory requirements since the system
+					has to compute, store, and process a larger number of subpixels. Additionally, bilinear
+					interpolation requires fetching four texels for every sampling point, and linear level-of-detail
+					sampling further intensi
+				</p>
+				<p>
+					Antialiasing power varies widely among these techniques, with each approach offering distinct
+					advantages and limitations. Super-sampling provides the strongest antialiasing effect by effectively
+					sampling multiple subpixel locations, which smooths out jagged edges and reduces artifacts,
+					especially during downscaling. However, its benefits can diminish when images are magnified, as the
+					source detail may not be sufficient to leverage the high number of samples. Nearest-pixel sampling,
+					while fast and memory-efficient, often leads to noticeable pixelation when upscaling images;
+					bilinear interpolation can mitigate this by averaging texel values, though it might not completely
+					eliminate aliasing. Meanwhile, linear level-of-detail sampling offers a balanced solution by
+					smoothing transitions between mipmap levels, making it particularly useful when textures are viewed
+					at varying scales.
 				</p>
 
 				<h3 style="color:blue">Comparison of Different Sampling Techniques</h3>
-				<p>
+				<p>ß
 					To illustrate the effects of different sampling techniques, we compare four combinations of level
 					and pixel sampling:
 				</p>
@@ -895,24 +909,7 @@ case 'E':
 					</div>
 				</div>
 
-				<h3 style="color:blue">Discussion on the Differences</h3>
-				<p>
-					The selected sampling method significantly affects visual quality:
-
-					- **L_ZERO & P_NEAREST:** Produces strong pixelation and aliasing due to the lack of interpolation.
-					- **L_ZERO & P_LINEAR:** Improves smoothness but still exhibits noticeable aliasing due to a lack of
-					mipmap adaptation.
-					- **L_NEAREST & P_NEAREST:** Uses the nearest mipmap level to reduce aliasing but still has blocky
-					textures due to nearest-neighbor sampling.
-					- **L_NEAREST & P_LINEAR:** Provides the best balance of quality and performance, using mipmap level
-					selection and bilinear filtering for smoother results.
-				</p>
-				<p>
-					Using level sampling (L_NEAREST or L_LINEAR) is particularly useful when a texture undergoes
-					significant minification (i.e., when projected onto a small screen area). This prevents aliasing and
-					shimmering effects. However, increasing the complexity of level sampling introduces additional
-					computational costs, requiring a trade-off between performance and quality.
-				</p>
+				
 
 				<!-- <h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 				<p>
