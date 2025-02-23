@@ -1,45 +1,59 @@
 <html>
-	<head>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-		<style>
-			h1 {
-				text-align: center;
-			}
 
-			.container {
-				margin: 0 auto;
-				padding: 60px 20%;
+<head>
+	<script>
+		MathJax = {
+			tex: {
+				inlineMath: [['$', '$'], ['\\(', '\\)']],
+				displayMath: [['$$', '$$'], ['\\[', '\\]']]
 			}
+		};
+	</script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
-			figure {
-				text-align: center;
-			}
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+		h1 {
+			text-align: center;
+		}
 
-			img {
-				display: inline-block;
-			}
+		.container {
+			margin: 0 auto;
+			padding: 60px 20%;
+		}
 
-			body {
-				font-family: 'Inter', sans-serif;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
+		figure {
+			text-align: center;
+		}
+
+		img {
+			display: inline-block;
+		}
+
+		body {
+			font-family: 'Inter', sans-serif;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
 		<div style="text-align: center;">Names: </div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a
+			href="https://cal-cs184-student.github.io/hw-webpages-jiangpf2022/">cs184.eecs.berkeley.edu/sp25</a>
 
 		<br>
-		
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+
+		Link to GitHub repository: <a
+			href="https://github.com/cal-cs184-student/sp25-hw2-gavin0576">cs184.eecs.berkeley.edu/sp25</a>
 
 		<figure>
-			<img src="teapot.png" alt="Teapot" style="width:50%"/>
+			<img src="teapot.png" alt="Teapot" style="width:50%" />
 			<figcaption>You can add images with captions!</figcaption>
 		</figure>
 
@@ -47,15 +61,134 @@
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
 		-->
 
-		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		<h2 style="color:red">Overview</h2>
+		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole.
+		Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
 		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<h4 style="color:blue">Briefly explain de Casteljau’s algorithm and how you implemented it in order to evaluate
+			Bezier curves.</h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q1_1.png" width="400px" />
+						<figcaption>Bezier curves with 4 control points.</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			de Casteljau's algorithm is a recursive method used to evaluate a point on a Bezier curve through iterative
+			linear interpolation of control points.
+		</p>
+		<p>
+			Given a set of control points \( P_0, P_1, \dots, P_n \) and a parameter \( t \) (where \( 0 \leq t \leq 1
+			\)), the algorithm computes intermediate points using the following formula:
+		</p>
+		<p style="text-align: center;">
+			\[ P_i^j = (1-t) \cdot P_i^{j-1} + t \cdot P_{i+1}^{j-1} \]
+		</p>
+		<p>
+			Here, \( P_i^j \) denotes the i-th point at the j-th level of recursion. The algorithm repeatedly applies
+			this formula to generate a new set of points until only a single point remains, which is the evaluated point
+			on the Bezier curve corresponding to the given \( t \).
+		</p>
+		<p>
+			In our implementation, the function <code>evaluateStep</code> performs one iteration of this process by
+			taking a vector of 2D control points, and computing the interpolated points between each pair of adjacent
+			points. By recursively calling <code>evaluateStep</code> until the set reduces to a single point, we obtain
+			the desired point on the curve.
+		</p>
+		<h3 style="color:blue">Take a look at the provided .bzc files and create your own Bezier curve with 6 control
+			points of your choosing. Use this Bezier curve for your screenshots below.</h3>
+		<p>
+			For this exercise, I have created a Bezier curve defined by 6 control points. The control points I chose
+			are:
+		</p>
+		<ul>
+			<li>(0.500, 0.350)</li>
+			<li>(0.300, 0.600)</li>
+			<li>(0.700, 0.750)</li>
+			<li>(0.800, 0.450)</li>
+			<li>(0.995, 0.451)</li>
+			<li>(0.666, 0.888)</li>
+		</ul>
+		<p>
+			These points are used in the .bzc file to generate the Bezier curve, and the screenshots below illustrate
+			the resulting curve.
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q1_2.png" width="400px" />
+						<figcaption>Bezier curves with 4 control points.</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<h3 style="color:blue">
+			Show screenshots of each step / level of the evaluation from the original control points down to the final evaluated point. Press E to step through. Toggle C to show the completed Bezier curve as well.
+		  </h3>
+		  <p>
+			The image below illustrates each step of the de Casteljau’s algorithm applied to our Bezier curve. It shows:
+		  </p>
+		  <ol>
+			<li>The original control points.</li>
+			<li>The intermediate levels generated by linear interpolation between adjacent points.</li>
+			<li>The final evaluated point on the Bezier curve.</li>
+		  </ol>
+		  <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="Image/Q1-3.png" width="300px"/>
+				  <figcaption>Picture1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="Image/Q1-4.png" width="300px"/>
+				  <figcaption>Picture2</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="Image/Q1-5.png" width="300px"/>
+					<figcaption>Picture3</figcaption>
+				  </td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="Image/Q1-6.png" width="300px"/>
+				  <figcaption>Picture4</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="Image/Q1-7.png" width="300px"/>
+				  <figcaption>Picture5</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<h3 style="color:blue">
+			Show a screenshot of a slightly different Bezier curve by moving the original control points around and modifying the parameter \(t\) via mouse scrolling.
+		  </h3>
+		  <p>
+			By interactively adjusting the control points and changing the parameter \(t\) through mouse scrolling, a new variation of the Bezier curve is produced. This modified curve illustrates how even slight adjustments in the control points or the value of \(t\) can significantly alter the curve's shape.
+		  </p>
+		  <p>
+			The screenshot below  shows the modified Bezier curve, highlighting the changes in the control points and the resulting impact on the curve's geometry.
+		  </p>
+		  <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q1-8.png" width="400px" />
+						<figcaption>Bezier curves with different points and different t.</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!-- <p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -79,38 +212,63 @@
 				</td>
 			  </tr>
 			</table>
-		</div>
+		</div> -->
 
 		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h3>Part 5: Edge split</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h2>Additional Notes (please remove)</h2>
 		<ul>
 			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
+			<li>If you'd like to add math equations,
 				<ul>
 					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
 					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
 				</ul>
 			</li>
 		</ul>
-		</div>
-	</body>
+	</div>
+</body>
+
 </html>
