@@ -316,29 +316,14 @@
 		<p>
 			Below are the screenshots demonstrating the effect of using vertex normals:
 		</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q3-1.png" width="403px" />
-						<figcaption>Teapot without Vertex Normals (Flat Shading)</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q3-2.png" width="400px" />
-						<figcaption>Teapot with Vertex Normals (Phong Shading)</figcaption>
-					</td>
-				</tr>
-				</tr>
-			</table>
-		</div>
-		<!-- <p>
+		<p>
 			<strong>Teapot with Vertex Normals (Phong Shading):</strong><br>
 			<img src="Image/Q3-1.png" alt="Teapot without vertex normals" width="500">
 		</p>
 		<p>
 			<strong>Teapot without Vertex Normals (Flat Shading):</strong><br>
 			<img src="Image/Q3-2.png" alt="Teapot with vertex normals" width="500">
-		</p> -->
+		</p>
 
 		<h3>Part 4: Edge flip</h3>
 		<h3 style="color:blue">Question: Please explain in detail the specific steps involved in the edge flip
@@ -373,223 +358,41 @@
 		</p>
 
 		<h3 style="color:blue">Question: Show screenshots of the teapot before and after some edge flips.</h3>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q4-1.png" width="440px" />
-						<figcaption>Teapot before edge flips</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q4-2.png" width="400px" />
-						<figcaption>Teapot after edge flips</figcaption>
-					</td>
-				</tr>
-				</tr>
-			</table>
-		</div>
-		<!-- <p><strong>Before edge flips:</strong></p>
-		<img src="Image/Q4-1.png" alt="Teapot before edge flips" width="500">
+		<p><strong>Before edge flips:</strong></p>
+		<img src="Image/Q" alt="Teapot before edge flips" width="500">
 		<p><strong>After edge flips:</strong></p>
-		<img src="Image/Q4-2.png" alt="Teapot after edge flips" width="500"> -->
+		<img src="screenshot_after_edge_flip.png" alt="Teapot after edge flips" width="500">
 		<h3>Part 5: Edge split</h3>
-		<h3 style="color:blue">Question: Please briefly explain how you implemented the edge split operation and
-			describe any interesting debugging techniques you used.</h3>
-		<p>
-			The edge split operation divides an edge by inserting a new vertex at its midpoint and then reconfiguring
-			the mesh connectivity. The implementation handles both interior and boundary cases with the following steps:
-		</p>
-		<ol>
-			<li>
-				<strong>Edge Selection:</strong> Retrieve the two halfedges of the edge. If both halfedges are on the
-				boundary, the split is not performed.
-			</li>
-			<li>
-				<strong>Boundary vs. Interior Handling:</strong> For a boundary edge (where only one halfedge is on the
-				boundary), choose the non-boundary halfedge for processing, and for interior edges, work with both
-				adjacent faces.
-			</li>
-			<li>
-				<strong>Vertex Insertion:</strong> Compute the new vertex's position as the midpoint (e.g., using \(0.5
-				\times (\text{position}_b + \text{position}_c)\)) of a selected edge.
-			</li>
-			<li>
-				<strong>Creating New Elements:</strong> Create new halfedges and edges that connect the new vertex with
-				the appropriate neighboring vertices. This splits the original face(s) into two smaller faces.
-			</li>
-			<li>
-				<strong>Rewiring:</strong> Update all <code>next</code> pointers and reassign face and vertex references
-				so that the mesh connectivity remains consistent after the split.
-			</li>
-		</ol>
-		<p>
-			During development, I used extensive debugging output (now commented out) to check the consistency of
-			halfedges, edges, vertices, and faces after the split. These printouts were invaluable in quickly
-			identifying and fixing connectivity issues.
-		</p>
-
-		<h3 style="color:blue">Question: Show screenshots of a mesh before and after some edge splits.</h3>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q5-1.png" width="417px" />
-						<figcaption>Mesh before edge splits</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q5-2.png" width="400px" />
-						<figcaption>Mesh after edge splits</figcaption>
-					</td>
-				</tr>
-				</tr>
-			</table>
-		</div>
-		<!-- <p><strong>Mesh before edge splits:</strong></p>
-		<img src="Image/Q5-1.png" alt="Mesh before edge splits" width="500">
-		<p><strong>Mesh after edge splits:</strong></p>
-		<img src="Image/Q5-2.png" alt="Mesh after edge splits" width="500"> -->
-
-		<h3 style="color:blue">Question: Show screenshots of a mesh before and after a combination of both edge splits
-			and edge flips.</h3>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q5-3.png" width="390px" />
-						<figcaption>Mesh before combined operations</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q5-4.png" width="400px" />
-						<figcaption>Mesh after combined operations</figcaption>
-					</td>
-				</tr>
-				</tr>
-			</table>
-		</div>
-		<!-- <p><strong>Mesh before combined operations:</strong></p>
-		<img src="Image/Q5-3.png" alt="Mesh before combined operations" width="500">
-		<p><strong>Mesh after combined operations:</strong></p>
-		<img src="Image/Q5-4.png" alt="Mesh after combined operations" width="500"> -->
-
-		<h3 style="color:blue">Question: If you have implemented support for boundary edges, show screenshots of your
-			implementation properly handling split operations on boundary edges.</h3>
-		<!-- <p><strong>Boundary edge split example:</strong></p>
-		<img src="screenshot_boundary_edge_split.png" alt="Boundary edge split example" width="500"> -->
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q5-5.png" width="390px" />
-						<figcaption>Mesh before split operation</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q5-6.png" width="400px" />
-						<figcaption>Mesh after split operation</figcaption>
-					</td>
-				</tr>
-				</tr>
-			</table>
-		</div>
-
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		<h3 style="color:blue">Question: Please briefly explain how you implemented the loop subdivision and describe
-			any interesting debugging techniques you used.</h3>
-		<p>
-			In my loop subdivision implementation, I first compute new positions for all vertices. For interior
-			vertices, I calculate a weighted average of the vertex’s position and its neighbors’ positions using a
-			weight \( u \) (where \( u=\frac{3}{16} \) for valence 3 and \( u=\frac{3}{8n} \) otherwise). 
-			Then, I compute new positions for edges (using a weighted average of the endpoints and their opposite
-			vertices). After computing these new positions, I perform edge splits on all original edges to insert new
-			vertices and update connectivity. Finally, I selectively flip some edges (based on whether one vertex is new
-			and the other isn’t) to improve the mesh quality.
-		</p>
-		<p>
-			Throughout development, I embedded extensive debugging outputs (now commented out) to verify the consistency
-			of halfedges, edges, vertices, and faces. This helped me catch connectivity issues early and ensured the
-			mesh topology remained correct during subdivision.
-		</p>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
-		<h3 style="color:blue">Question: What are your observations on how meshes behave after loop subdivision? What
-			happens to sharp corners and edges, and can pre-splitting some edges reduce this effect?</h3>
-		<p>
-			After loop subdivision, meshes generally become smoother, and sharp corners and edges tend to round off.
-			This smoothing effect is intrinsic to the averaging process of the subdivision algorithm. However, by
-			pre-splitting certain edges, it is possible to preserve some of the sharp features, as additional vertices
-			allow more localized control of the weighting. This pre-processing helps maintain a degree of crispness at
-			corners or along edges that are meant to remain sharp.
-		</p>
+		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 
-		<h3 style="color:blue">Question: In your experiments with <code>dae/cube.dae</code>, how does the cube behave
-			after several subdivisions, and how did you pre-process it with edge flips and splits to achieve symmetric
-			subdivision?</h3>
-		<p>
-			When applying multiple iterations of loop subdivision on the cube, I noticed that the cube tends to become
-			slightly asymmetric due to uneven vertex connectivity and discretization errors. To combat this, I
-			pre-processed the cube using targeted edge flips and splits. This reorganization of the mesh helps balance
-			the vertex valences, leading to more uniform weight distribution during subdivision and ultimately a more
-			symmetric result. Essentially, the pre-processing minimizes irregularities that would otherwise amplify with
-			repeated subdivisions.
-		</p>
-
-		<h3 style="color:blue">Question: Extra Credit: Please explain your extra credit extension for supporting meshes
-			with boundary.</h3>
-		<p>
-			For the extra credit, I extended my loop subdivision implementation to properly handle meshes with
-			boundaries. The key modification was to ensure that the edge split function correctly processes boundary
-			edges and to compute a different weighted average for boundary vertices (using 0.75 for the original vertex
-			and 0.125 for each adjacent boundary vertex).I use the special formula:
-			\[
-			\text{newPosition} = 0.75 \times \text{position} + 0.125 \times (\text{prev.position} +
-			\text{next.position})
-			\]This approach, inspired by techniques from “A Survey of
-			Subdivision-Based Tools for Surface Modeling,” preserves the boundary shape while still smoothing the
-			interior, resulting in a more natural look along the edges.
-		</p>
-
-		<h3 style="color:blue">Question: Please show screenshots of your observations (before and after) for the
-			following cases:</h3>
-		<p>
-			The screenshots below illustrate:
-		</p>
+		<h2>Additional Notes (please remove)</h2>
 		<ul>
-			<li>Generic mesh before and after loop subdivision.</li>
-			<li>The cube before and after pre-processing (with edge flips and splits) to achieve symmetric subdivision.
+			<li>You can also add code if you'd like as so: <code>code code code</code></li>
+			<li>If you'd like to add math equations,
+				<ul>
+					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
+					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
+				</ul>
 			</li>
-			<li>An example demonstrating the extra credit feature for handling meshes with boundaries.</li>
 		</ul>
-
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q2-1.png" width="300px" />
-						<figcaption>Before Loop Subdivision (Generic Mesh)</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q2-2.png" width="300px" />
-						<figcaption>After Loop Subdivision (Generic Mesh)</figcaption>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q2-3.png" width="300px" />
-						<figcaption>Cube Before Pre-Processing</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q2-4.png" width="300px" />
-						<figcaption>Cube After Pre-Processing</figcaption>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-			<img src="Image/Q2-5.png" width="300px" />
-			<figcaption>Extra Credit: Boundary Mesh Handling</figcaption>
-		</div>
-
-
-
 	</div>
 </body>
 
