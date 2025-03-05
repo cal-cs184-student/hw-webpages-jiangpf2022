@@ -40,31 +40,43 @@
 <body>
 	<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names:Gavin Jiang </div>
 
 		<br>
 
-		Link to webpage: <a
-			href="https://cal-cs184-student.github.io/hw-webpages-jiangpf2022/">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-jiangpf2022/">Click here</a>
 
 		<br>
 
-		Link to GitHub repository: <a
-			href="https://github.com/cal-cs184-student/sp25-hw2-gavin0576">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw2-gavin0576">Click here</a>
 
-		<figure>
+		<!-- <figure>
 			<img src="teapot.png" alt="Teapot" style="width:50%" />
 			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		</figure> -->
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
 		-->
 
 		<h2 style="color:red">Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole.
-		Share your thoughts on what interesting things you've learned from completing the homework.
-
+		<p>
+			This homework project showcases a comprehensive exploration of advanced computer graphics techniques. It
+			combines the implementation of Bezier curves and surfaces using de Casteljau’s algorithm with sophisticated
+			mesh processing operations based on the half-edge data structure.
+		</p>
+		<p>
+			Throughout the assignment, I developed interactive methods for evaluating curves and surfaces, enabling
+			step-by-step visualization of the recursive de Casteljau process. Additionally, I implemented various mesh
+			operations including area-weighted vertex normals, edge flips, edge splits, and loop subdivision to upsample
+			meshes, which are all documented with detailed screenshots.
+		</p>
+		<p>
+			The project not only reinforced my understanding of the mathematical foundations behind Bezier
+			representations and mesh connectivity but also highlighted practical challenges such as preserving sharp
+			features and achieving symmetric subdivision through pre-processing techniques. Overall, it provided
+			valuable insights into both the theoretical and practical aspects of modern computer graphics.
+		</p>
 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
 		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
@@ -493,100 +505,196 @@
 
 
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		<h3 style="color:blue">Question: Please briefly explain how you implemented the loop subdivision and describe
-			any interesting debugging techniques you used.</h3>
+		<h3 style="color:blue">Briefly explain how you implemented the loop subdivision and describe any interesting
+			implementation / debugging tricks you have used.</h3>
 		<p>
 			In my loop subdivision implementation, I first compute new positions for all vertices. For interior
-			vertices, I calculate a weighted average of the vertex’s position and its neighbors’ positions using a
-			weight \( u \) (where \( u=\frac{3}{16} \) for valence 3 and \( u=\frac{3}{8n} \) otherwise). 
-			Then, I compute new positions for edges (using a weighted average of the endpoints and their opposite
-			vertices). After computing these new positions, I perform edge splits on all original edges to insert new
-			vertices and update connectivity. Finally, I selectively flip some edges (based on whether one vertex is new
-			and the other isn’t) to improve the mesh quality.
+			vertices, I use a weighted average that depends on the vertex’s valence – using a weight \( u \) (with \(
+			u=\frac{3}{16} \) for valence 3 and \( u=\frac{3}{8n} \) for other cases) applied to the neighbors’
+			positions.
+			Then, I calculate new positions for edges by averaging the endpoints and their opposite vertices (or simply
+			the endpoints for boundary edges). After computing these new positions, I perform edge splits on the
+			original edges to insert new vertices and update connectivity, followed by selective edge flips (based on
+			whether one vertex is new and the other is not) to improve the mesh quality.
 		</p>
 		<p>
-			Throughout development, I embedded extensive debugging outputs (now commented out) to verify the consistency
-			of halfedges, edges, vertices, and faces. This helped me catch connectivity issues early and ensured the
-			mesh topology remained correct during subdivision.
+			To debug the process, I included extensive printouts (now commented out) that checked the consistency of
+			halfedges, edges, vertices, and faces after each operation. This detailed logging was key to tracking down
+			and fixing connectivity errors.
 		</p>
 
-		<h3 style="color:blue">Question: What are your observations on how meshes behave after loop subdivision? What
-			happens to sharp corners and edges, and can pre-splitting some edges reduce this effect?</h3>
+		<h3 style="color:blue">Take some notes, as well as some screenshots, of your observations on how meshes behave
+			after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting
+			some edges?</h3>
+
 		<p>
-			After loop subdivision, meshes generally become smoother, and sharp corners and edges tend to round off.
-			This smoothing effect is intrinsic to the averaging process of the subdivision algorithm. However, by
-			pre-splitting certain edges, it is possible to preserve some of the sharp features, as additional vertices
-			allow more localized control of the weighting. This pre-processing helps maintain a degree of crispness at
-			corners or along edges that are meant to remain sharp.
+			Without pre-processing:
 		</p>
-
-		<h3 style="color:blue">Question: In your experiments with <code>dae/cube.dae</code>, how does the cube behave
-			after several subdivisions, and how did you pre-process it with edge flips and splits to achieve symmetric
-			subdivision?</h3>
-		<p>
-			When applying multiple iterations of loop subdivision on the cube, I noticed that the cube tends to become
-			slightly asymmetric due to uneven vertex connectivity and discretization errors. To combat this, I
-			pre-processed the cube using targeted edge flips and splits. This reorganization of the mesh helps balance
-			the vertex valences, leading to more uniform weight distribution during subdivision and ultimately a more
-			symmetric result. Essentially, the pre-processing minimizes irregularities that would otherwise amplify with
-			repeated subdivisions.
-		</p>
-
-		<h3 style="color:blue">Question: Extra Credit: Please explain your extra credit extension for supporting meshes
-			with boundary.</h3>
-		<p>
-			For the extra credit, I extended my loop subdivision implementation to properly handle meshes with
-			boundaries. The key modification was to ensure that the edge split function correctly processes boundary
-			edges and to compute a different weighted average for boundary vertices (using 0.75 for the original vertex
-			and 0.125 for each adjacent boundary vertex).I use the special formula:
-			\[
-			\text{newPosition} = 0.75 \times \text{position} + 0.125 \times (\text{prev.position} +
-			\text{next.position})
-			\]This approach, inspired by techniques from “A Survey of
-			Subdivision-Based Tools for Surface Modeling,” preserves the boundary shape while still smoothing the
-			interior, resulting in a more natural look along the edges.
-		</p>
-
-		<h3 style="color:blue">Question: Please show screenshots of your observations (before and after) for the
-			following cases:</h3>
-		<p>
-			The screenshots below illustrate:
-		</p>
-		<ul>
-			<li>Generic mesh before and after loop subdivision.</li>
-			<li>The cube before and after pre-processing (with edge flips and splits) to achieve symmetric subdivision.
-			</li>
-			<li>An example demonstrating the extra credit feature for handling meshes with boundaries.</li>
-		</ul>
-
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 				<tr>
 					<td style="text-align: center;">
-						<img src="Image/Q2-1.png" width="300px" />
-						<figcaption>Before Loop Subdivision (Generic Mesh)</figcaption>
+						<img src="Image/Q6-1.png" width="200px" />
+						<figcaption>1</figcaption>
 					</td>
 					<td style="text-align: center;">
-						<img src="Image/Q2-2.png" width="300px" />
-						<figcaption>After Loop Subdivision (Generic Mesh)</figcaption>
+						<img src="Image/Q6-2.png" width="200px" />
+						<figcaption>2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-3.png" width="200px" />
+						<figcaption>3</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-4.png" width="200px" />
+						<figcaption>4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-5.png" width="200px" />
+						<figcaption>5</figcaption>
 					</td>
 				</tr>
-				<tr>
-					<td style="text-align: center;">
-						<img src="Image/Q2-3.png" width="300px" />
-						<figcaption>Cube Before Pre-Processing</figcaption>
-					</td>
-					<td style="text-align: center;">
-						<img src="Image/Q2-4.png" width="300px" />
-						<figcaption>Cube After Pre-Processing</figcaption>
-					</td>
 				</tr>
 			</table>
 		</div>
-		<div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-			<img src="Image/Q2-5.png" width="300px" />
-			<figcaption>Extra Credit: Boundary Mesh Handling</figcaption>
+		<p>
+			With pre-processing:
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q6-13.png" width="200px" />
+						<figcaption>1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-14.png" width="200px" />
+						<figcaption>2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-15.png" width="200px" />
+						<figcaption>3</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-16.png" width="200px" />
+						<figcaption>4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-17.png" width="200px" />
+						<figcaption>5</figcaption>
+					</td>
+				</tr>
+				</tr>
+			</table>
 		</div>
+		<p>
+			I observed that after loop subdivision, meshes become noticeably smoother. Sharp corners and edges tend to
+			round off due to the averaging process inherent in the algorithm. However, by pre-splitting certain edges
+			before subdivision, it is possible to preserve some of the sharp features because the additional vertices
+			allow for more localized control of the weighting. This pre-splitting can help maintain some crispness along
+			intended sharp features.
+		</p>
+
+		<h3 style="color:blue">Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice
+			that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with
+			edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they
+			occur. Also explain how your pre-processing helps alleviate the effects.</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q6-1.png" width="200px" />
+						<figcaption>1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-2.png" width="200px" />
+						<figcaption>2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-3.png" width="200px" />
+						<figcaption>3</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-4.png" width="200px" />
+						<figcaption>4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-5.png" width="200px" />
+						<figcaption>5</figcaption>
+					</td>
+				</tr>
+				</tr>
+			</table>
+		</div>
+		<p>
+			When I applied multiple iterations of loop subdivision to <code>dae/cube.dae</code>, I noticed that the cube
+			gradually became asymmetric. This asymmetry occurs due to uneven vertex valences and discretization errors
+			that become more pronounced with each subdivision iteration. To counteract this, I pre-processed the cube
+			using targeted edge splits and flips. By reconfiguring the connectivity and balancing vertex valences, the
+			pre-processing helps distribute the weights more evenly during subdivision, leading to a more symmetric
+			outcome. In essence, the pre-processing minimizes irregularities that would otherwise be amplified with
+			repeated subdivisions.
+		</p>
+		Below are pictures after pre-processing:
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q6-6.png" width="200px" />
+						<figcaption>1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-7.png" width="200px" />
+						<figcaption>2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-8.png" width="200px" />
+						<figcaption>3</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-9.png" width="200px" />
+						<figcaption>4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-10.png" width="200px" />
+						<figcaption>5</figcaption>
+					</td>
+				</tr>
+				</tr>
+			</table>
+		</div>
+
+		<h3 style="color:blue">If you have implemented any extra credit extensions, explain what you did and document
+			how they work with screenshots.</h3>
+		<p>
+			For the extra credit, I extended my implementation to support meshes with boundaries. The key changes
+			included modifying the edge split function to properly handle boundary edges and applying a different
+			weighted average for boundary vertices (using 0.75 for the vertex itself and 0.125 for each of its boundary
+			neighbors). I apply a special formula:
+			\[
+			\text{newPosition} = 0.75 \times \text{position} + 0.125 \times (\text{prev.position} +
+			\text{next.position})
+			\]This approach, inspired by techniques from “A Survey of Subdivision-Based Tools for Surface
+			Modeling,” ensures that boundary features are preserved and smoothed appropriately, resulting in a more
+			natural appearance along the mesh borders.
+		</p>
+		Below are the screenshots of beetle.dae before and after loop subdivision.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q6-11.png" width="400px" />
+						<figcaption>Before</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q6-12.png" width="400px" />
+						<figcaption>After</figcaption>
+					</td>
+				</tr>
+				</tr>
+			</table>
+		</div>
+
 
 
 
