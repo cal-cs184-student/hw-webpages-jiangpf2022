@@ -614,24 +614,30 @@
 			of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5
 			for max ray depth.</h3>
 
-		<div style="display:flex; flex-direction:column;">
-			<div style="margin-bottom:20px;">
-				<img src="images/CBbunny_adaptive_2048spp.png" width="500px" />
-				<figcaption><strong>CBbunny Render (Adaptive, 2048 spp)</strong></figcaption>
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_A.png" width="300px" />
+							<figcaption>max_ray_depth:0</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_A_rate.png" width="300px" />
+							<figcaption>max_ray_depth:1</figcaption>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBlucy_A.png" width="300px" />
+							<figcaption>max_ray_depth:2</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBlucy_A_rate.png" width="300px" />
+							<figcaption>max_ray_depth:3</figcaption>
+						</td>
+					</tr>
+				</table>
 			</div>
-			<div style="margin-bottom:20px;">
-				<img src="images/CBbunny_adaptive_rate.png" width="500px" />
-				<figcaption><strong>CBbunny Sample Rate Image (Adaptive)</strong></figcaption>
-			</div>
-			<div style="margin-bottom:20px;">
-				<img src="images/dragon_adaptive_2048spp.png" width="500px" />
-				<figcaption><strong>Dragon Render (Adaptive, 2048 spp)</strong></figcaption>
-			</div>
-			<div>
-				<img src="images/dragon_adaptive_rate.png" width="500px" />
-				<figcaption><strong>Dragon Sample Rate Image (Adaptive)</strong></figcaption>
-			</div>
-		</div>
 
 		<p>
 			The adaptive sampling images demonstrate significant efficiency improvements. Regions with complex indirect
