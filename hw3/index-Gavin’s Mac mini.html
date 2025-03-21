@@ -451,31 +451,21 @@
 					<tr>
 						<td style="text-align: center;">
 							<img src="Image/CBbunny_0_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:0</figcaption>
+							<figcaption>1 Light Ray</figcaption>
 						</td>
 						<td style="text-align: center;">
-							<img src="Image/CBbunny_1_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:1</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_2_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:2</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_3_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:3</figcaption>
+							<img src="Image/Q3-4.png" width="300px" />
+							<figcaption>4 Light Rays</figcaption>
 						</td>
 					</tr>
 					<tr>
 						<td style="text-align: center;">
-							<img src="Image/CBbunny_4_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:4</figcaption>
+							<img src="Image/Q3-5.png" width="300px" />
+							<figcaption>16 Light Rays</figcaption>
 						</td>
 						<td style="text-align: center;">
-							<img src="Image/CBbunny_100_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:100</figcaption>
+							<img src="Image/Q3-6.png" width="300px" />
+							<figcaption>64 Light Rays</figcaption>
 						</td>
 					</tr>
 				</table>
@@ -488,46 +478,11 @@
 
 		<h3 style="color:blue">Pick one scene and compare rendered views with various sample-per-pixel rates, including
 			at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:1</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_2_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:2</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_4_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:4</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_8_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:8</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_16_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:16</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_64_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:64</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1024_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:1024</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div>
+			<img src="images/CBspheres_sampling_comparison_1-1024spp.png" width="800px">
+			<figcaption><strong>Figure:</strong> CBspheres_lambertian.dae at various samples per pixel (1, 2, 4, 8, 16,
+				64, 1024) with 4 light rays.</figcaption>
+		</div>
 		<p>
 			Lower sampling rates result in visibly noisy images due to fewer samples capturing lighting variability. As
 			the sample-per-pixel count increases, the noise decreases progressively, and illumination becomes smoother
