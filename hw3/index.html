@@ -400,11 +400,11 @@
 			indirect illumination. Use 1024 samples per pixel.</h3>
 		<div style="display:flex;">
 			<div style="margin-right:10px;">
-				<img src="images/CBbunny_direct_only_1024spp.png" width="300px">
+				<img src="image/CBbunny_only_direct.png" width="300px">
 				<figcaption><strong>Direct Illumination Only</strong></figcaption>
 			</div>
 			<div>
-				<img src="images/CBbunny_indirect_only_1024spp.png" width="300px">
+				<img src="image/CBbunny_only_indirect.png" width="300px">
 				<figcaption><strong>Indirect Illumination Only</strong></figcaption>
 			</div>
 		</div>
@@ -418,11 +418,40 @@
 			and 5 (the -m flag), and isAccumBounces=false. Explain in your write-up what you see for the 2nd and 3rd
 			bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use
 			1024 samples per pixel.</h3>
-		<div>
-			<img src="images/CBbunny_mth_bounce_unaccumulated_0-5_1024spp.png" width="800px">
-			<figcaption><strong>Figure:</strong> Unaccumulated lighting for CBbunny.dae from 0th to 5th bounce (1024
-				spp).</figcaption>
-		</div>
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_000.png" width="300px" />
+							<figcaption>max_ray_depth:0</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_111.png" width="300px" />
+							<figcaption>max_ray_depth:1</figcaption>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_222.png" width="300px" />
+							<figcaption>max_ray_depth:2</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_333.png" width="300px" />
+							<figcaption>max_ray_depth:3</figcaption>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_444.png" width="300px" />
+							<figcaption>max_ray_depth:4</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_555.png" width="300px" />
+							<figcaption>max_ray_depth:5</figcaption>
+						</td>
+					</tr>
+				</table>
+			</div>
 		<p>
 			At the 2nd bounce, we notice initial subtle indirect lighting effects, such as color bleeding, where colors
 			from nearby surfaces reflect onto each other, enriching the visual realism. By the 3rd bounce, these
@@ -432,11 +461,40 @@
 
 		<h3 style="color:blue">Compare rendered views of accumulated and unaccumulated bounces for CBbunny.dae with
 			max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag). Use 1024 samples per pixel.</h3>
-		<div>
-			<img src="images/CBbunny_accum_vs_unaccumulated_0-5_1024spp.png" width="800px">
-			<figcaption><strong>Figure:</strong> Comparison between accumulated and unaccumulated lighting (0 to 5
-				bounces, 1024 spp).</figcaption>
-		</div>
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_0000.png" width="300px" />
+							<figcaption>max_ray_depth:0(accumulated)</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_1111.png" width="300px" />
+							<figcaption>max_ray_depth:1(accumulated)</figcaption>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_2222.png" width="300px" />
+							<figcaption>max_ray_depth:2(accumulated)</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_3333.png" width="300px" />
+							<figcaption>max_ray_depth:3(accumulated)</figcaption>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_4444.png" width="300px" />
+							<figcaption>max_ray_depth:4(accumulated)</figcaption>
+						</td>
+						<td style="text-align: center;">
+							<img src="Image/CBbunny_5555.png" width="300px" />
+							<figcaption>max_ray_depth:5(accumulated)</figcaption>
+						</td>
+					</tr>
+				</table>
+			</div>
 		<p>
 			Accumulated rendering incorporates all previous bounce contributions, leading to increasingly realistic
 			illumination as depth increases. Unaccumulated views isolate each bounce's individual lighting contribution,
@@ -583,23 +641,7 @@
 		</p>
 
 
-		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-		laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations,
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		
 	</div>
 </body>
 
