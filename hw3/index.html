@@ -65,8 +65,25 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole.
-		Share your thoughts on what interesting things you've learned from completing the homework.
+		<p>
+			In this homework, I implemented a comprehensive ray-tracing pipeline, covering essential rendering
+			components from basic ray generation and intersection testing to advanced global illumination techniques. I
+			began by developing efficient intersection algorithms for geometric primitives like triangles and spheres.
+			To significantly enhance performance, I constructed a Bounding Volume Hierarchy (BVH) using a
+			midpoint-splitting heuristic, achieving remarkable speedups for complex scenes. I explored direct
+			illumination through both uniform hemisphere sampling and importance sampling strategies, clearly
+			demonstrating the latter’s superior effectiveness in reducing noise and enhancing realism. Further, I
+			extended the renderer to handle indirect illumination via recursive ray tracing, incorporating Russian
+			Roulette termination to balance accuracy and computational efficiency. Lastly, I implemented adaptive
+			sampling, dynamically allocating rendering resources based on pixel variance, dramatically optimizing
+			rendering time without sacrificing image quality.
+
+			This project deepened my understanding of realistic lighting simulation and highlighted the importance of
+			algorithmic optimization in rendering workflows. The striking visual difference between direct and indirect
+			illumination, especially subtle effects like color bleeding and realistic soft shadows, was particularly
+			fascinating. Overall, this homework strengthened my grasp of core ray-tracing techniques and their practical
+			application in generating photorealistic imagery.
+		</p>
 
 
 
@@ -381,20 +398,20 @@
 
 		<h3 style="color:blue">Show some images rendered with global (direct and indirect) illumination. Use 1024
 			samples per pixel.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/Q4-1.png" width="300px" />
-							<figcaption>CBunny</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/Q3-4.png" width="300px" />
-							<figcaption>4 Light Rays</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/Q4-1.png" width="300px" />
+						<figcaption>CBunny</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/Q3-4.png" width="300px" />
+						<figcaption>4 Light Rays</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 
 		<h3 style="color:blue">Pick one scene and compare rendered views first with only direct illumination, then only
 			indirect illumination. Use 1024 samples per pixel.</h3>
@@ -409,92 +426,100 @@
 			</div>
 		</div>
 		<p>
-			In direct illumination, we see sharp shadows and clear highlights where surfaces directly face the light. In
-			contrast, indirect illumination reveals soft shadows, subtle color bleeding, and ambient lighting that
-			provides realistic depth and richness, especially noticeable on surfaces not directly exposed to the light.
+			From these images, we can clearly see the distinction between direct and indirect illumination. The direct
+			illumination image shows only the area directly facing the light source (in this case, the ceiling light),
+			resulting in a very limited and starkly contrasted lighting situation with the rest of the scene completely
+			dark. In contrast, the indirect illumination image vividly illustrates how light bounces off surfaces,
+			creating soft shadows, gentle gradients, and noticeable color bleeding—such as the red and blue hues
+			reflecting from the walls onto the bunny and surrounding surfaces. This demonstrates the significant
+			contribution of indirect illumination to realistic rendering, emphasizing the importance of capturing
+			bounced lighting effects to achieve visually convincing results.
 		</p>
 
 		<h3 style="color:blue">For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4,
 			and 5 (the -m flag), and isAccumBounces=false. Explain in your write-up what you see for the 2nd and 3rd
 			bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use
 			1024 samples per pixel.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_000.png" width="300px" />
-							<figcaption>max_ray_depth:0</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_111.png" width="300px" />
-							<figcaption>max_ray_depth:1</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_222.png" width="300px" />
-							<figcaption>max_ray_depth:2</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_333.png" width="300px" />
-							<figcaption>max_ray_depth:3</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_444.png" width="300px" />
-							<figcaption>max_ray_depth:4</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_555.png" width="300px" />
-							<figcaption>max_ray_depth:5</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_000.png" width="300px" />
+						<figcaption>max_ray_depth:0</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_111.png" width="300px" />
+						<figcaption>max_ray_depth:1</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_222.png" width="300px" />
+						<figcaption>max_ray_depth:2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_333.png" width="300px" />
+						<figcaption>max_ray_depth:3</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_444.png" width="300px" />
+						<figcaption>max_ray_depth:4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_555.png" width="300px" />
+						<figcaption>max_ray_depth:5</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<p>
-			At the 2nd bounce, we notice initial subtle indirect lighting effects, such as color bleeding, where colors
-			from nearby surfaces reflect onto each other, enriching the visual realism. By the 3rd bounce, these
-			indirect effects become smoother and more uniformly distributed, significantly enhancing realism beyond
-			standard rasterization, which typically does not capture these subtle global interactions.
+			The 2nd bounce of light shows subtle yet essential indirect illumination effects, notably color bleeding,
+			where colors from the walls softly illuminate adjacent surfaces. This contributes greatly to the realism by
+			enriching the visual complexity beyond direct lighting alone. In the 3rd bounce, the effect becomes even
+			subtler, with faint lighting contributions providing additional depth and nuanced shading to shadowed areas.
+			Compared to rasterization—which typically captures only direct illumination—these additional bounces
+			significantly enhance realism, capturing how light behaves naturally, reflecting and diffusing within the
+			scene environment to produce visually richer and more lifelike results.
 		</p>
 
 		<h3 style="color:blue">Compare rendered views of accumulated and unaccumulated bounces for CBbunny.dae with
 			max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag). Use 1024 samples per pixel.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_0000.png" width="300px" />
-							<figcaption>max_ray_depth:0(accumulated)</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1111.png" width="300px" />
-							<figcaption>max_ray_depth:1(accumulated)</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_2222.png" width="300px" />
-							<figcaption>max_ray_depth:2(accumulated)</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_3333.png" width="300px" />
-							<figcaption>max_ray_depth:3(accumulated)</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_4444.png" width="300px" />
-							<figcaption>max_ray_depth:4(accumulated)</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_5555.png" width="300px" />
-							<figcaption>max_ray_depth:5(accumulated)</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_0000.png" width="300px" />
+						<figcaption>max_ray_depth:0(accumulated)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_1111.png" width="300px" />
+						<figcaption>max_ray_depth:1(accumulated)</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_2222.png" width="300px" />
+						<figcaption>max_ray_depth:2(accumulated)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_3333.png" width="300px" />
+						<figcaption>max_ray_depth:3(accumulated)</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_4444.png" width="300px" />
+						<figcaption>max_ray_depth:4(accumulated)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_5555.png" width="300px" />
+						<figcaption>max_ray_depth:5(accumulated)</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<p>
 			Accumulated rendering incorporates all previous bounce contributions, leading to increasingly realistic
 			illumination as depth increases. Unaccumulated views isolate each bounce's individual lighting contribution,
@@ -504,40 +529,40 @@
 
 		<h3 style="color:blue">For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2,
 			3, 4, and 100 (the -m flag). Use 1024 samples per pixel.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_0_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:0</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:1</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_2_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:2</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_3_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:3</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_4_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:4</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_100_0_R.png" width="300px" />
-							<figcaption>max_ray_depth:100</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_0_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:0</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_1_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:1</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_2_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_3_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:3</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_4_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_100_0_R.png" width="300px" />
+						<figcaption>max_ray_depth:100</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<p>
 			Russian Roulette allows unbiased termination of low-contribution paths, significantly improving rendering
 			efficiency. With a higher maximum depth (e.g., 100), the rendering results converge smoothly without much
@@ -546,46 +571,46 @@
 
 		<h3 style="color:blue">Pick one scene and compare rendered views with various sample-per-pixel rates, including
 			at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</h3>
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:1</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_2_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:2</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_4_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:4</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_8_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:8</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_16_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:16</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_64_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:64</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_1024_S.png" width="300px" />
-							<figcaption>sample-per-pixel rates:1024</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_1_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_2_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:2</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_4_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:4</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_8_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:8</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_16_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:16</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_64_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:64</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_1024_S.png" width="300px" />
+						<figcaption>sample-per-pixel rates:1024</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<p>
 			Lower sampling rates result in visibly noisy images due to fewer samples capturing lighting variability. As
 			the sample-per-pixel count increases, the noise decreases progressively, and illumination becomes smoother
@@ -614,40 +639,42 @@
 			of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5
 			for max ray depth.</h3>
 
-			<div style="display: flex; flex-direction: column; align-items: center;">
-				<table style="width: 100%; text-align: center; border-collapse: collapse;">
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_A.png" width="300px" />
-							<figcaption>max_ray_depth:0</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBbunny_A_rate.png" width="300px" />
-							<figcaption>max_ray_depth:1</figcaption>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">
-							<img src="Image/CBlucy_A.png" width="300px" />
-							<figcaption>max_ray_depth:2</figcaption>
-						</td>
-						<td style="text-align: center;">
-							<img src="Image/CBlucy_A_rate.png" width="300px" />
-							<figcaption>max_ray_depth:3</figcaption>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_A.png" width="300px" />
+						<figcaption>max_ray_depth:0</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/CBbunny_A_rate.png" width="300px" />
+						<figcaption>max_ray_depth:1</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="Image/sphere_A.png" width="300px" />
+						<figcaption>max_ray_depth:2</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="Image/sphere_A_rate.png" width="300px" />
+						<figcaption>max_ray_depth:3</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 
 		<p>
-			The adaptive sampling images demonstrate significant efficiency improvements. Regions with complex indirect
-			lighting, shadows, or color transitions require higher sample rates, shown in red. Simpler, uniformly lit
-			areas converge quickly, indicated in blue, significantly reducing the overall rendering time while
-			maintaining noise-free results.
+			The adaptive sampling visualizations clearly illustrate how sampling effort dynamically varies across image
+			regions. High-variance areas, such as edges, shadows, and points of indirect lighting reflection, are
+			highlighted in red, indicating higher sample counts to achieve noise-free rendering. In contrast, regions
+			with more uniform illumination are shown in blue, signifying fewer samples are needed for convergence. This
+			adaptive strategy efficiently reduces computation time by allocating rendering resources primarily where
+			they're needed most, resulting in high-quality images that are both realistic and computationally efficient.
 		</p>
 
 
-		
+
 	</div>
 </body>
 
